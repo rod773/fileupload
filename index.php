@@ -1,5 +1,5 @@
 <?php 
-header('Content-Type: application/json; charset=utf-8');
+header('Content-Type: application/json; charset=utf-8, multipart/form-data');
 header("Access-Control-Allow-Origin: *");
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
 header('Access-Control-Allow-Credentials: true');
@@ -9,9 +9,16 @@ if ('OPTIONS' == $_SERVER['REQUEST_METHOD']) {
     exit;
 }
 
+require_once("../../wp-load.php");
+
+
+
 $response = array();
 $upload_dir = 'uploads/';
 $server_url = 'http://localhost/wordpress/tienda/';
+
+
+
 
 
 // if (isset($_FILES['file'])) {
@@ -31,13 +38,13 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
     $temporal = $_FILES['file']['tmp_name'];
     $error = $_FILES['file']['error'];
 
-    // Tamaño máximo permitido en bytes (2 MB)
+    //Tamaño máximo permitido en bytes (2 MB)
     $tamanoMaximo = 2 * 1024 * 1024;
 
-    // Tipos de archivo permitidos (jpg y png)
+    //Tipos de archivo permitidos (jpg y png)
     $tiposPermitidos = ['image/jpeg', 'image/png'];
 
-    // Validar tamaño y tipo del archivo
+    //Validar tamaño y tipo del archivo
     if ($_FILES['file']['size'] <= $tamanoMaximo && in_array($_FILES['file']['type'], $tiposPermitidos)) {
         
         $directorioDestino = '../uploads/';
@@ -46,8 +53,9 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
         if (move_uploaded_file($_FILES['file']['tmp_name'], $ubicacionFinal)) {
             echo json_encode([
                 'message' => "El archivo se ha subido correctamente.",
-                'url' => $server_url.$upload_dir.$nombre
+                'url' => $server_url . $upload_dir . $nombre 
             ]);
+            
         } else {
             echo "Error al mover el archivo.";
         }
@@ -63,7 +71,6 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
 
 
 
- 
 
-// echo json_encode($response);
+
 ?>
