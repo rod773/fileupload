@@ -15,11 +15,7 @@ $server_url = 'http://localhost/wordpress/tienda/';
 
 
 // if (isset($_FILES['file'])) {
-//     $nombre = $_FILES['file']['name'];
-//     $tipo = $_FILES['file']['type'];
-//     $tamano = $_FILES['file']['size'];
-//     $temporal = $_FILES['file']['tmp_name'];
-//     $error = $_FILES['file']['error'];
+
 
 
 //     echo json_encode([$nombre,$tipo,$tamano,$temporal,$error]);
@@ -27,6 +23,14 @@ $server_url = 'http://localhost/wordpress/tienda/';
 
 // Verificar si se subió un archivo sin errores
 if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+
+
+    $nombre = $_FILES['file']['name'];
+    $tipo = $_FILES['file']['type'];
+    $tamano = $_FILES['file']['size'];
+    $temporal = $_FILES['file']['tmp_name'];
+    $error = $_FILES['file']['error'];
+
     // Tamaño máximo permitido en bytes (2 MB)
     $tamanoMaximo = 2 * 1024 * 1024;
 
@@ -42,7 +46,7 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
         if (move_uploaded_file($_FILES['file']['tmp_name'], $ubicacionFinal)) {
             echo json_encode([
                 'message' => "El archivo se ha subido correctamente.",
-                'url' => $server_url.$upload_dir
+                'url' => $server_url.$upload_dir.$nombre
             ]);
         } else {
             echo "Error al mover el archivo.";
